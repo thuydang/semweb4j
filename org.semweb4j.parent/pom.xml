@@ -102,6 +102,9 @@
 		<!-- avoid warning about creating platform-dependent builds -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+	<!-- Disable javadoc, which causes error on Java8 -->
+    <additionalparam>-Xdoclint:none</additionalparam>
 	</properties>
 
 	<!-- default dependencies for all packages -->

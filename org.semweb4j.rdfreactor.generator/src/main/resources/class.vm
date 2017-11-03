@@ -60,7 +60,7 @@ import org.ontoware.rdfreactor.runtime.CardinalityException;
 ##     -----------------------------------------------------------------------
 ##    |  class declaration
 ##
-public class ${class.name} extends $class.superclass {
+public class ${classnameprefix}${class.name} extends ${classnameprefix}$class.superclass {
 
 ##     -----------------------------------------------------------------------
 ##    |  URI constants for properties
@@ -102,7 +102,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param write if true, the statement (this, rdf:type, TYPE) is written to the model
 #debug("c1")
 	 */
-	protected ${class.name} (Model model, URI classURI, Resource instanceIdentifier, boolean write) {
+	protected ${classnameprefix}${class.name} (Model model, URI classURI, Resource instanceIdentifier, boolean write) {
 		super(model, classURI, instanceIdentifier, write);
 	}
 
@@ -116,7 +116,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param write if true, the statement (this, rdf:type, TYPE) is written to the model
 #debug("c2")
 	 */
-	public ${class.name} (Model model, Resource instanceIdentifier, boolean write) {
+	public ${classnameprefix}${class.name} (Model model, Resource instanceIdentifier, boolean write) {
 		super(model, RDFS_CLASS, instanceIdentifier, write);
 	}
 
@@ -129,7 +129,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param uri URI of this instance
 #debug("c3")
 	 */
-	public ${class.name} (Model model, URI uri) {
+	public ${classnameprefix}${class.name} (Model model, URI uri) {
 		this(model, uri, true);
 	}
 
@@ -142,7 +142,7 @@ public class ${class.name} extends $class.superclass {
 	 * @throws ModelRuntimeException if URI syntax is wrong
 #debug("c4")
 	 */
-	public ${class.name} (Model model, String uriString ) throws ModelRuntimeException {
+	public ${classnameprefix}${class.name} (Model model, String uriString ) throws ModelRuntimeException {
 		this(model, new URIImpl(uriString), true);
 	}
 
@@ -154,7 +154,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param bnode BlankNode of this instance
 #debug("c5")
 	 */
-	public ${class.name} (Model model, BlankNode bnode) {
+	public ${classnameprefix}${class.name} (Model model, BlankNode bnode) {
 		this(model, bnode, true);
 	}
 
@@ -166,7 +166,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param model RDF2GO Model implementation, see http://rdf2go.ontoware.org
 #debug("c6")
 	 */
-	public ${class.name} (Model model) {
+	public ${classnameprefix}${class.name} (Model model) {
 		this(model, model.newRandomUniqueURI(), true);
 	}
 
@@ -181,7 +181,7 @@ public class ${class.name} extends $class.superclass {
 	 * @throws ModelRuntimeException if URI syntax is wrong
 #debug("c7")
 	 */
-	public ${class.name} (Model model, String uriString, boolean write) throws ModelRuntimeException {
+	public ${classnameprefix}${class.name} (Model model, String uriString, boolean write) throws ModelRuntimeException {
 		super(model, RDFS_CLASS, new URIImpl(uriString,false), write);
 	}
 
@@ -193,7 +193,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param write if true, the statement (this, rdf:type, TYPE) is written to the model
 #debug("c8")
 	 */
-	public ${class.name} (Model model, BlankNode bnode, boolean write) {
+	public ${classnameprefix}${class.name} (Model model, BlankNode bnode, boolean write) {
 		super(model, RDFS_CLASS, bnode, write);
 	}
 
@@ -205,7 +205,7 @@ public class ${class.name} extends $class.superclass {
 	 * @param write if true, the statement (this, rdf:type, TYPE) is written to the model
 #debug("c9")
 	 */
-	public ${class.name} (Model model, boolean write) {
+	public ${classnameprefix}${class.name} (Model model, boolean write) {
 		super(model, RDFS_CLASS, model.newRandomUniqueURI(), write);
 	}
 #end###if( $writetostore )
@@ -220,11 +220,11 @@ public class ${class.name} extends $class.superclass {
 	 * Return an existing instance of this class in the model. No statements are written.
 	 * @param model an RDF2Go model
 	 * @param instanceResource an RDF2Go resource
-	 * @return an instance of ${class.name} or null if none existst
+	 * @return an instance of ${classnameprefix}${class.name} or null if none existst
 #debug("class0")
 	 */
-	public static ${class.name} getInstance(Model model, Resource instanceResource) {
-		return Base.getInstance(model, instanceResource, ${class.name}.class);
+	public static ${classnameprefix}${class.name} getInstance(Model model, Resource instanceResource) {
+		return Base.getInstance(model, instanceResource, ${classnameprefix}${class.name}.class);
 	}
 
 	/**
@@ -263,12 +263,12 @@ public class ${class.name} extends $class.superclass {
 	 * which can conveniently be converted to iterator, list or array.
 #debug("class3-as")
 	 */
-	public static ReactorResult<? extends ${class.name}> getAllInstances_as(Model model) {
-		return Base.getAllInstances_as(model, RDFS_CLASS, ${class.name}.class );
+	public static ReactorResult<? extends ${classnameprefix}${class.name}> getAllInstances_as(Model model) {
+		return Base.getAllInstances_as(model, RDFS_CLASS, ${classnameprefix}${class.name}.class );
 	}
 
     /**
-	 * Remove triple {@code (this, rdf:type, ${class.name})} from this instance. Other triples are not affected.
+	 * Remove triple {@code (this, rdf:type, ${classnameprefix}${class.name})} from this instance. Other triples are not affected.
 	 * To delete more, use deleteAllProperties
 	 * @param model an RDF2Go model
 	 * @param instanceResource an RDF2Go resource
@@ -299,31 +299,31 @@ public class ${class.name} extends $class.superclass {
 #comment("	 " $inverse)
 	 * @param model an RDF2Go model
 	 * @param objectValue
-	 * @return all A's as RDF resources, that have a relation '#mixedcase( $inverse.getInverse().getName() )' to this ${class.name} instance
+	 * @return all A's as RDF resources, that have a relation '#mixedcase( $inverse.getInverse().getName() )' to this ${classnameprefix}${class.name} instance
 #debug("getallinverse1static")
 	 */
 	public static ClosableIterator<Resource> getAll${methodnameprefix}#mixedcase($inverse.name)_Inverse(Model model, Object objectValue) {
-		return Base.getAll_Inverse(model, ${inverse.getFirstType()}.#uppercase($inverse.name), objectValue);
+		return Base.getAll_Inverse(model, ${classnameprefix}${inverse.getFirstType()}.#uppercase($inverse.name), objectValue);
 	}
 
 	/**
 #comment("	 " $inverse)
-	 * @return all A's as RDF resources, that have a relation '#mixedcase( $inverse.getInverse().getName() )' to this ${class.name} instance
+	 * @return all A's as RDF resources, that have a relation '#mixedcase( $inverse.getInverse().getName() )' to this ${classnameprefix}${class.name} instance
 #debug("getallinverse1dynamic")
 	 */
 	public ClosableIterator<Resource> getAll${methodnameprefix}#mixedcase($inverse.name)_Inverse() {
-		return Base.getAll_Inverse(this.model, ${inverse.getFirstType()}.#uppercase($inverse.name), this.getResource() );
+		return Base.getAll_Inverse(this.model, ${classnameprefix}${inverse.getFirstType()}.#uppercase($inverse.name), this.getResource() );
 	}
 
 	/**
 #comment("	 " $inverse)
 	 * @param model an RDF2Go model
 	 * @param objectValue
-	 * @return all A's as a ReactorResult, that have a relation '#mixedcase( $inverse.getInverse().getName() )' to this ${class.name} instance
+	 * @return all A's as a ReactorResult, that have a relation '#mixedcase( $inverse.getInverse().getName() )' to this ${classnameprefix}${class.name} instance
 #debug("getallinverse-as1static")
 	 */
 	public static ReactorResult<Resource> getAll${methodnameprefix}#mixedcase($inverse.name)_Inverse_as(Model model, Object objectValue) {
-		return Base.getAll_Inverse_as(model, ${inverse.getFirstType()}.#uppercase($inverse.name), objectValue, Resource.class);
+		return Base.getAll_Inverse_as(model, ${classnameprefix}${inverse.getFirstType()}.#uppercase($inverse.name), objectValue, Resource.class);
 	}
 
 #end## #foreach( $inverse in $class.inverseProperties )

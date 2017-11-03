@@ -3,6 +3,7 @@ package org.ontoware.rdfreactor.generator;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.StringWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
@@ -53,9 +54,12 @@ public class SourceCodeWriter {
      * @throws IOException
      */
     public static void write(JModel jm, File outdir, String methodnamePrefix) throws IOException {
-        write(jm, outdir, TEMPLATE_CLASS, methodnamePrefix);
+        write(jm, outdir, TEMPLATE_CLASS, methodnamePrefix, "");
     }
     
+	public static void write(JModel jm, File outdir, String templateClass, String methodnamePrefix) throws IOException {
+        write(jm, outdir, templateClass, methodnamePrefix, "");
+	}
     /**
      * Writes model 'jm' to 'outdir' creating sub-directories for packages as
      * needed. Uses 'templateName'. Prefixes all methods with 'prefix', e.g.
@@ -67,7 +71,7 @@ public class SourceCodeWriter {
      * @param methodnamePrefix
      * @throws IOException
      */
-    public static void write(JModel jm, File outdir, String templateName, String methodnamePrefix)
+    public static void write(JModel jm, File outdir, String templateName, String methodnamePrefix, String classnamePrefix)
             throws IOException {
         assert templateName != null;
         
@@ -91,7 +95,7 @@ public class SourceCodeWriter {
                 + templateName);
         
         Calendar now = Calendar.getInstance();
-        SourceCodeWriter sourceCodeWriter = new SourceCodeWriter(jm, methodnamePrefix, now,
+        SourceCodeWriter sourceCodeWriter = new SourceCodeWriter(jm, classnamePrefix, methodnamePrefix, now,
                 templateName, outdir);
         sourceCodeWriter.initEngine();
         sourceCodeWriter.initTemplate();
@@ -102,6 +106,8 @@ public class SourceCodeWriter {
     private final JModel jm;
     
     private final String methodnamePrefix;
+
+    private final String classnamePrefix;
     
     private final Calendar now;
     
@@ -118,14 +124,27 @@ public class SourceCodeWriter {
     public SourceCodeWriter(JModel jm, String methodnamePrefix, Calendar now, String templateName,
             File outdir) {
         this.jm = jm;
+        this.classnamePrefix = "";
+        this.methodnamePrefix = methodnamePrefix;
+        this.now = now;
+        this.templateName = templateName;
+        this.outdir = outdir;
+    }
+
+    public SourceCodeWriter(JModel jm, String classnamePrefix, String methodnamePrefix, Calendar now, String templateName,
+            File outdir) {
+        this.jm = jm;
+        this.classnamePrefix = classnamePrefix;
         this.methodnamePrefix = methodnamePrefix;
         this.now = now;
         this.templateName = templateName;
         this.outdir = outdir;
     }
     
+
     private void initContext() {
         this.velocityContext = new VelocityContext();
+        this.velocityContext.put("classnameprefix", this.classnamePrefix);
         this.velocityContext.put("methodnameprefix", this.methodnamePrefix);
         // for debug
         this.velocityContext.put("now", DateFormat.getInstance().format(this.now.getTime()));
@@ -189,7 +208,7 @@ public class SourceCodeWriter {
         assert jc.getSuperclass() != null;
         this.velocityContext.put("package", jp);
         this.velocityContext.put("class", jc);
-        File outfile = new File(packageOutdir, jc.getName() + ".java");
+        File outfile = new File(packageOutdir, this.classnamePrefix + jc.getName() + ".java");
         log.info("Generating " + outfile.getAbsolutePath());
         FileWriter fw = new FileWriter(outfile);
         BufferedWriter bw = new BufferedWriter(fw);
@@ -233,4 +252,6 @@ public class SourceCodeWriter {
         // cache-grow bug
         // this.velocityContext.remove("package");
     }
+
+
 }

@@ -32,6 +32,7 @@ public class TestReportedBugs {
 
 		CodeGenerator.generate("./src/test/resources/reac15.rdfs", outdir,
 				"org.ontoware.rdfreactor.test.reac15", "RDFS", true, true, "");
+				//"org.ontoware.rdfreactor.test.reac15", Reasoning.rdfs, true);
 
 	}
 

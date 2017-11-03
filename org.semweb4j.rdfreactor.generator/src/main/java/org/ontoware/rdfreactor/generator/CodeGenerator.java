@@ -52,7 +52,7 @@ public class CodeGenerator {
     
     public static void generate(String schemafilename, String outdir, String packagename,
             Reasoning semantics, boolean skipbuiltins) throws Exception {
-        generate(schemafilename, outdir, packagename, semantics, skipbuiltins, "");
+        generate(schemafilename, outdir, packagename, semantics, skipbuiltins, "", "");
     }
     
     /**
@@ -70,13 +70,13 @@ public class CodeGenerator {
      * @throws Exception
      */
     public static void generate(String schemafilename, String outdir, String packagename,
-            Reasoning semantics, boolean skipbuiltins, String methodnamePrefix) throws Exception {
+            Reasoning semantics, boolean skipbuiltins, String methodnamePrefix, String classnamePrefix) throws Exception {
         
         // first step
         Model schemaDataModel = loadSchemaDataModel(schemafilename);
         File outDir = new File(outdir);
         
-        generate(schemaDataModel, outDir, packagename, semantics, skipbuiltins, methodnamePrefix);
+        generate(schemaDataModel, outDir, packagename, semantics, skipbuiltins, methodnamePrefix, classnamePrefix);
         schemaDataModel.close();
     }
     
@@ -106,7 +106,7 @@ public class CodeGenerator {
             throw new RuntimeException("Unknown semantics: '" + semantics + "'");
         }
         
-        generate(schemafilename, outdir, packagename, reasoning, skipbuiltins, methodnamePrefix);
+        generate(schemafilename, outdir, packagename, reasoning, skipbuiltins, methodnamePrefix, "");
     }
     
     /**
@@ -129,7 +129,7 @@ public class CodeGenerator {
             Reasoning semantics, boolean skipbuiltins, boolean alwaysWriteToModel,
             String methodnamePrefix) throws Exception {
         generate(modelWithSchemaData, outDir, packagename, semantics, skipbuiltins,
-                methodnamePrefix);
+                methodnamePrefix, "");
     }
     
     /**
@@ -144,7 +144,7 @@ public class CodeGenerator {
      * @throws IOException
      */
     public static void generate(Model modelWithSchemaData, File outDir, String packagename,
-            Reasoning semantics, boolean skipbuiltins, String methodnamePrefix) throws IOException {
+            Reasoning semantics, boolean skipbuiltins, String methodnamePrefix, String classnamePrefix) throws IOException {
         
         log.info("using semantics: " + semantics);
         // different semantics mean different ways to create the internal model
@@ -172,7 +172,7 @@ public class CodeGenerator {
         
         // third and final step
         log.info("write using sourceCodeWriter");
-        SourceCodeWriter.write(jm, outDir, SourceCodeWriter.TEMPLATE_CLASS, methodnamePrefix);
+        SourceCodeWriter.write(jm, outDir, SourceCodeWriter.TEMPLATE_CLASS, methodnamePrefix, classnamePrefix);
     }
     
     /**
